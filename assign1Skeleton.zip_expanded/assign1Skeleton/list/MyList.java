@@ -1,4 +1,5 @@
-package linkedList;
+package list;
+
 /**
  * Interface for the two lists implementation we will develop in this lab.
  * Note, as we do not seek to implement all the functionality in the built-in

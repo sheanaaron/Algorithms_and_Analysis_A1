@@ -1,5 +1,9 @@
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 // import java.util.*;
+
+import list.MyList;
 
 /**
  * Adjacency list implementation for the AssociationGraph interface.
@@ -10,12 +14,17 @@ import java.io.PrintWriter;
  */
 public class AdjacencyList extends AbstractGraph
 {
+	//Array that can store lists
+	private MyList graph[]; 
+	private Map map;
 
     /**
 	 * Contructs empty graph.
 	 */
     public AdjacencyList() {
     	 // Implement me!
+    	map = new HashMap();
+    	
 
     } // end of AdjacencyList()
 

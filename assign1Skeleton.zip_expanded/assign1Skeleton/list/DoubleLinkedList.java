@@ -1,4 +1,4 @@
-package linkedList;
+package list;
 /**
  * Double linked list that implements interface MyList.
  *
@@ -30,6 +30,7 @@ public class DoubleLinkedList implements MyList
 	 *
 	 * @param newValue Value to add to list.
 	 */
+	//adding to the front of the linked list is O(1) complexity whereas adding to the back is O(n)
 	public void add(String newValue) {
 		Node newNode = new Node(newValue);
 
