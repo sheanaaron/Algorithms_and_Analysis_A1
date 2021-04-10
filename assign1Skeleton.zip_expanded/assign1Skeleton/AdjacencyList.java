@@ -43,17 +43,16 @@ public class AdjacencyList extends AbstractGraph
 		{
 			map.put(vertLabel, vertices);
 			graph.add(new DoubleLinkedList());
-			System.out.println("added vertex :" + vertLabel + " at index: " + vertices);
 			++vertices;
 
 		}
-		//if theres more than one element in the map
+		//if theres more than one element in the map and it doesnt already exist, then we add a vertex
 		else
 		{
 			for (Map.Entry mapElement : map.entrySet()) {
 				if (vertLabel.equals((String)mapElement.getKey()))
 				{
-					System.out.println("Vertex already exists, try another label name");
+					System.err.println("Vertex already exists, try another vertex name");
 					exists = true;
 				}
 			}
@@ -90,7 +89,7 @@ public class AdjacencyList extends AbstractGraph
 				break;
 		}
 
-		if (srcExist& tarExist)
+		if (srcExist & tarExist)
 		{
 			//check if either the source or target either have a connection to one of them
 			MyList srcList = graph.get(map.get(srcLabel));
@@ -120,12 +119,83 @@ public class AdjacencyList extends AbstractGraph
 
 
 	public void deleteEdge(String srcLabel, String tarLabel) {
-		// Implement me!
+		//instead of accesing the map classes size method, we can use the local variable which holds the number of vertices
+		if (vertices>1)
+		{
+			boolean srcExist = false;
+			boolean tarExist = false;
+			boolean edgeExists = false;
+			srcLabel = srcLabel.toUpperCase();
+			tarLabel = tarLabel.toUpperCase();
+			
+			//loop through map to check if source and target exist
+			Iterator it = map.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry pair = (Map.Entry)it.next();
+				if (pair.getKey().equals(srcLabel))
+					srcExist = true;
+
+				if (pair.getKey().equals(tarLabel))
+					tarExist = true;
+				if (srcExist & tarExist)
+					break;
+			}
+			
+			if (srcExist & tarExist)
+			{
+				//check if either the source or target either have a connection to one of them
+				MyList srcList = graph.get(map.get(srcLabel));
+				MyList tarList = graph.get(map.get(tarLabel));
+
+				if (srcList.search(tarLabel)!=-1 )
+				{
+					//if edge exists, then delete edges
+					srcList.remove(tarLabel);
+					tarList.remove(srcLabel);
+				}
+				else
+					System.err.println("Edge doesn't exist");
+			}else
+			{
+				if (!srcExist)
+					System.err.println("Source vertex not found");
+				else
+					System.err.println("Target vertex not found");
+			}
+		}
 	} // end of deleteEdge()
 
 
 	public void deleteVertex(String vertLabel) {
-		// Implement me!
+		boolean exists = false;
+		vertLabel = vertLabel.toUpperCase();
+		if (map.size()!=0)
+		{
+			//check if item exists
+			Iterator it = map.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry pair = (Map.Entry)it.next();
+				if (pair.getKey().equals(vertLabel))
+					exists = true;
+					break;
+			}
+			if (exists)
+			{
+				//remove each edge that is connected to this vertex
+				for (int i=0; i<map.size()-1; i++)
+				{
+					graph.get(i).remove(vertLabel);
+					graph.print();
+				}
+				//remove vertex from the graph
+				
+				graph.remove(map.get(vertLabel));
+				
+			}else
+				System.err.println("item doesnt exist");			
+		}
+		else
+			System.err.println("Empty list");
 	} // end of deleteVertex()
 
 
