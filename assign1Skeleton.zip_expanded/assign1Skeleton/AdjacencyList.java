@@ -1,7 +1,10 @@
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 // import java.util.*;
+import java.util.NoSuchElementException;
 
 import array.*;
 import list.*;
@@ -44,6 +47,7 @@ public class AdjacencyList extends AbstractGraph
 			++vertices;
 
 		}
+		//if theres more than one element in the map
 		else
 		{
 			for (Map.Entry mapElement : map.entrySet()) {
@@ -56,9 +60,9 @@ public class AdjacencyList extends AbstractGraph
 
 			if (!exists) 
 			{
-			map.put(vertLabel, vertices);
-			graph.add(new DoubleLinkedList());
-			++vertices;
+				map.put(vertLabel, vertices);
+				graph.add(new DoubleLinkedList());
+				++vertices;
 			}
 
 		}
@@ -67,7 +71,46 @@ public class AdjacencyList extends AbstractGraph
 
 
 	public void addEdge(String srcLabel, String tarLabel) {
-		// Implement me!
+		boolean srcExist = false;
+		boolean tarExist = false;
+		boolean edgeExists = false;
+		srcLabel = srcLabel.toUpperCase();
+		tarLabel = tarLabel.toUpperCase();
+		
+		//loop through map to check if source and target exist
+		Iterator it = map.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry)it.next();
+			if (pair.getKey().equals(srcLabel))
+				srcExist = true;
+
+			if (pair.getKey().equals(tarLabel))
+				tarExist = true;
+			if (srcExist & tarExist)
+				break;
+		}
+
+		if (srcExist& tarExist)
+		{
+			//check if either the source or target either have a connection to one of them
+			MyList srcList = graph.get(map.get(srcLabel));
+			MyList tarList = graph.get(map.get(tarLabel));
+
+			if (srcList.search(tarLabel)==-1 )
+			{
+				//if not then make a connection
+				srcList.add(tarLabel);
+				tarList.add(srcLabel);
+			}
+			else
+				System.err.println("Edge already exists");
+		}else
+		{
+			if (!srcExist)
+				System.err.println("Source vertex not found");
+			else
+				System.err.println("Target vertex not found");
+		}
 	} // end of addEdge()
 
 
