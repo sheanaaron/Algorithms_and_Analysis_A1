@@ -26,13 +26,13 @@ public class DoubleLinkedList implements MyList
 
 
 	/**
-	 * Add a new value to the start of the list.
+	 * Add a new VertLabel to the start of the list.
 	 *
-	 * @param newValue Value to add to list.
+	 * @param newVertLabel VertLabel to add to list.
 	 */
 	//adding to the front of the linked list is O(1) complexity whereas adding to the back is O(n)
-	public void add(String newValue) {
-		Node newNode = new Node(newValue);
+	public void add(String newVertLabel) {
+		Node newNode = new Node(newVertLabel);
 
 		if (mHead==null)
 			mTail = newNode;
@@ -49,20 +49,20 @@ public class DoubleLinkedList implements MyList
 
 
 	/**
-	 * Insert value (and corresponding node) at position 'index'.  Indices start at 0.
+	 * Insert VertLabel (and corresponding node) at position 'index'.  Indices start at 0.
 	 *
-	 * @param index Position in list to add new value to.
-	 * @param newValue Value to add to list.
+	 * @param index Position in list to add new VertLabel to.
+	 * @param newVertLabel VertLabel to add to list.
 	 *
 	 * @throws IndexOutOfBoundsException Index is out of bounds.
 	 */
-	public void insert(int index, String newValue) throws IndexOutOfBoundsException {
+	public void insert(int index, String newVertLabel) throws IndexOutOfBoundsException {
 		if (index >= mLength || index < 0) {
 			throw new IndexOutOfBoundsException("Supplied index is invalid.");
 		}
-		Node newNode = new Node(newValue);
+		Node newNode = new Node(newVertLabel);
 		if (index==0)
-			add(newValue);
+			add(newVertLabel);
 		else if (index == mLength)
 		{
 			newNode.setPrev(mTail);
@@ -103,10 +103,10 @@ public class DoubleLinkedList implements MyList
 
 
 /**
- * Returns the value stored in node at position 'index' of list.
+ * Returns the VertLabel stored in node at position 'index' of list.
  *
- * @param index Position in list to get new value for.
- * @return Value of element at specified position in list.
+ * @param index Position in list to get new VertLabel for.
+ * @return VertLabel of element at specified position in list.
  *
  * @throws IndexOutOfBoundsException Index is out of bounds.
  */
@@ -128,24 +128,24 @@ public String get(int index) throws IndexOutOfBoundsException {
 			currentNode = currentNode.getPrev();
 		}
 	}
-	System.out.println(currentNode.getValue());
-	return currentNode.getValue();
+	System.out.println(currentNode.getVertLabel());
+	return currentNode.getVertLabel();
 } // end of get()
 
 
 /**
- * Searches for the index that contains value.  If value is not present,
+ * Searches for the index that contains VertLabel.  If VertLabel is not present,
  * method returns -1 (NOT_IN_ARRAY).
- * If there are multiple values that could be returned, return the one with
+ * If there are multiple VertLabels that could be returned, return the one with
  * the smallest index.
  *
- * @param value Value to search for.
- * @return Index where value is located, otherwise returns -1 (NOT_IN_ARRAY).
+ * @param VertLabel VertLabel to search for.
+ * @return Index where VertLabel is located, otherwise returns -1 (NOT_IN_ARRAY).
  */
-public int search(String value) {
+public int search(String VertLabel) {
 	Node currentNode = mHead;
 	for (int i = 0; i < mLength; ++i) {
-		if (currentNode.getValue().equals(value) ) {
+		if (currentNode.getVertLabel().equals(VertLabel) ) {
 			return i;
 		}
 		currentNode = currentNode.getNext();
@@ -156,18 +156,18 @@ public int search(String value) {
 
 
 /**
- * Delete given value from list (delete first instance found).
+ * Delete given VertLabel from list (delete first instance found).
  *
- * @param value Value to remove.
+ * @param VertLabel VertLabel to remove.
  * @return True if deletion was successful, otherwise false.
  */
-public boolean remove(String value) {
+public boolean remove(String vertLabel) {
 
 	boolean flag = false;
 	Node currentNode = mHead;
 	for (int i=0; i<mLength; i++)
 	{
-		if (currentNode.getValue().equals(value) )
+		if (currentNode.getVertLabel().equals(vertLabel) )
 		{
 			if (i!=0)
 				currentNode.getPrev().setNext(currentNode.getNext());
@@ -190,11 +190,11 @@ public boolean remove(String value) {
 
 
 /**
- * Delete value (and corresponding node) at position 'index'.  Indices start at 0.
+ * Delete VertLabel (and corresponding node) at position 'index'.  Indices start at 0.
  *
- * @param index Position in list to get new value for.
+ * @param index Position in list to get new VertLabel for.
  * @param dummy Dummy variable, serves no use apart from distinguishing overloaded methods.
- * @return Value of node that was deleted.
+ * @return VertLabel of node that was deleted.
  *
  * @throws IndexOutOfBoundsException Index is out of bounds.
  */
@@ -210,7 +210,7 @@ public String remove(int index, boolean dummy) throws IndexOutOfBoundsException 
  			currentNode = currentNode.getNext();
  		}
  		if (index == 0)
- 			remove(currentNode.getValue());
+ 			remove(currentNode.getVertLabel());
  		else {
  			currentNode.getPrev().setNext(currentNode.getNext());
  			currentNode.getNext().setPrev(currentNode.getPrev());
@@ -229,8 +229,8 @@ public String remove(int index, boolean dummy) throws IndexOutOfBoundsException 
  		--mLength;
  	}
 
-     // UPDATE (DUMMY VALUE)
-     return currentNode.getValue();
+     // UPDATE (DUMMY VertLabel)
+     return currentNode.getVertLabel();
 } // end of remove()
 
 
@@ -252,7 +252,7 @@ public void reversePrint() {
 	  String str = "";
 
       while (currentNode != null) {
-          str = str+ (currentNode.getValue() + " ");
+          str = str+ (currentNode.getVertLabel() + " ");
           currentNode = currentNode.getPrev();
       }
       System.out.println(str);
@@ -270,7 +270,7 @@ public String toString() {
 	StringBuffer str = new StringBuffer();
 
 	while (currentNode != null) {
-		str.append(currentNode.getValue() + " ");
+		str.append(currentNode.getVertLabel() + " ");
 		currentNode = currentNode.getNext();
 	}
 
@@ -284,21 +284,21 @@ public String toString() {
  */
 private class Node
 {
-	/** Stored value of node. */
-	private String mValue;
+	/** Stored VertLabel of node. */
+	private String vertLabel;
 	/** Reference to next node. */
 	private Node mNext;
 	/** Reference to previous node. */
 	private Node mPrev;
 
-	public Node(String newValue) {
-		mValue = newValue;
+	public Node(String newVertLabel) {
+		vertLabel = newVertLabel;
 		mNext = null;
 		mPrev = null;
 	}
 
-	public String getValue() {
-		return mValue;
+	public String getVertLabel() {
+		return vertLabel;
 	}
 
 
@@ -312,8 +312,8 @@ private class Node
 	}
 
 
-	public void setValue(String value) {
-		mValue = value;
+	public void setVertLabel(String newVertLabel) {
+		vertLabel = newVertLabel;
 	}
 
 
