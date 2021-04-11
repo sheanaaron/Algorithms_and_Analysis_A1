@@ -187,7 +187,7 @@ public class AdjacencyList extends AbstractGraph
 					graph.get(i).remove(vertLabel);
 				}
 				//remove vertex from the graph
-				
+				//IMPLEMENT REMOVE
 				graph.remove(map.get(vertLabel));
 				
 			}else

@@ -1,4 +1,5 @@
 package list;
+
 /**
  * Double linked list that implements interface MyList.
  *
@@ -290,13 +291,25 @@ private class Node
 	private Node mNext;
 	/** Reference to previous node. */
 	private Node mPrev;
+	/** State of the node */
+	private SIRState mState;
 
 	public Node(String newVertLabel) {
 		vertLabel = newVertLabel;
 		mNext = null;
 		mPrev = null;
+		SIRState mState;
 	}
 
+	public void setState(SIRState newState){
+		mState = newState;
+	}
+	
+	public SIRState getState()
+	{
+		return mState;
+	}
+	
 	public String getVertLabel() {
 		return vertLabel;
 	}

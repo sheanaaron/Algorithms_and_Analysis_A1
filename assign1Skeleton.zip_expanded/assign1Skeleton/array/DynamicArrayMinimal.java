@@ -135,7 +135,7 @@ public class DynamicArrayMinimal implements MyArray
 
     } // end of insert()
     
-    public void remove(int index)throws IndexOutOfBoundsException {
+    public void remove(Integer index)throws IndexOutOfBoundsException {
         if (index >= array.length || index < 0) {
             throw new IndexOutOfBoundsException("Supplied index is invalid.");
         }

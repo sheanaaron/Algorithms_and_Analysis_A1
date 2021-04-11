@@ -65,7 +65,7 @@ public interface MyArray
 	 *
 	 * @throws IndexOutOfBoundsException In index are out of bounds.
 	 */
-	public abstract void remove(int index)throws IndexOutOfBoundsException;
+	public abstract void remove(Integer index)throws IndexOutOfBoundsException;
 	
 	/**
 	 * Searches for the index that contains value.  If value is not present,
