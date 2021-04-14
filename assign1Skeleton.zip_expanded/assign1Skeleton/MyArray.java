@@ -1,5 +1,5 @@
-package array;
-import list.MyList;
+
+//import list.MyList;
 
 /**
  * Interface for the (dynamic) array implementations we will develop in this lab.

@@ -1,14 +1,11 @@
-import java.io.IOException;
 import java.io.PrintWriter;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 // import java.util.*;
-import java.util.NoSuchElementException;
-
-import array.*;
-import list.*;
-
+//import array.*;
+//import list.*;
 /**
  * Adjacency list implementation for the AssociationGraph interface.
  *
@@ -20,7 +17,8 @@ public class AdjacencyList extends AbstractGraph
 {
 	//Array that can store lists
 	private int numEdge;
-	private DynamicArrayMinimal graph; 
+	//private DynamicArrayMinimal graph; 
+	private MyArray graph;
 	private Map<String, Integer> map;
 	private int vertices;
 
@@ -43,6 +41,7 @@ public class AdjacencyList extends AbstractGraph
 		{
 			map.put(vertLabel, vertices);
 			graph.add(new DoubleLinkedList());
+			graph.get(0).add(vertLabel);
 			++vertices;
 
 		}
@@ -61,8 +60,10 @@ public class AdjacencyList extends AbstractGraph
 			{
 				map.put(vertLabel, vertices);
 				graph.add(new DoubleLinkedList());
+				graph.get(vertices).add(vertLabel);
 				++vertices;
 			}
+
 
 		}
 
@@ -75,7 +76,7 @@ public class AdjacencyList extends AbstractGraph
 		boolean edgeExists = false;
 		srcLabel = srcLabel.toUpperCase();
 		tarLabel = tarLabel.toUpperCase();
-		
+
 		//loop through map to check if source and target exist
 		Iterator it = map.entrySet().iterator();
 		while (it.hasNext()) {
@@ -127,7 +128,7 @@ public class AdjacencyList extends AbstractGraph
 			boolean edgeExists = false;
 			srcLabel = srcLabel.toUpperCase();
 			tarLabel = tarLabel.toUpperCase();
-			
+
 			//loop through map to check if source and target exist
 			Iterator it = map.entrySet().iterator();
 			while (it.hasNext()) {
@@ -140,7 +141,7 @@ public class AdjacencyList extends AbstractGraph
 				if (srcExist & tarExist)
 					break;
 			}
-			
+
 			if (srcExist & tarExist)
 			{
 				//check if either the source or target either have a connection to one of them
@@ -169,6 +170,7 @@ public class AdjacencyList extends AbstractGraph
 	public void deleteVertex(String vertLabel) {
 		boolean exists = false;
 		vertLabel = vertLabel.toUpperCase();
+
 		if (map.size()!=0)
 		{
 			//check if item exists
@@ -177,19 +179,19 @@ public class AdjacencyList extends AbstractGraph
 				Map.Entry pair = (Map.Entry)it.next();
 				if (pair.getKey().equals(vertLabel))
 					exists = true;
-					break;
+				break;
 			}
 			if (exists)
 			{
 				//remove each edge that is connected to this vertex
-				for (int i=0; i<map.size()-1; i++)
-				{
-					graph.get(i).remove(vertLabel);
+				for (int i=0; i<map.size(); i++)
+				{	
+					if (!graph.get(i).get(0).equals(vertLabel))
+						graph.get(i).remove(vertLabel);
 				}
 				//remove vertex from the graph
-				//IMPLEMENT REMOVE
 				graph.remove(map.get(vertLabel));
-				
+
 			}else
 				System.err.println("item doesnt exist");			
 		}
@@ -207,12 +209,51 @@ public class AdjacencyList extends AbstractGraph
 
 
 	public void printVertices(PrintWriter os) {
-		// Implement me!
+
+
+		if (map.size()>0)
+		{
+			StringBuffer str = new StringBuffer();
+			for (int i=0; i<map.size(); i++)
+			{
+				MyList currList = graph.get(i);
+				str.append("(" + currList.get(currList.getLength()) + ","+ graph.get(i).getState().toString()+") ") ;
+			}			  
+
+			os.write(str.toString());        
+			os.flush();
+
+		}else
+			System.err.println("Empty Graph");
 	} // end of printVertices()
 
 
 	public void printEdges(PrintWriter os) {
-		// Implement me!
+
+		StringBuffer str = new StringBuffer();
+		if (map.size()>0)
+		{
+//			for (int i=0; i< map.size(); i++)
+//
+//			{
+//				for (int j=1; j<graph.get(i).getLength();j++)
+//				{
+//					str.append(graph.get(i).get(0) + graph.get(i).get(j) + "\n");
+//				}
+//			}
+//			os.write(str.toString());
+//			os.flush();
+			for (int i=0; i<map.size(); i++)
+			{
+				System.out.println("YS");
+
+				if (graph.get(i).getLength()>1)
+				{
+					graph.get(i).print();
+				}
+			}
+		}else
+			System.err.println("Empty Graph");
 	} // end of printEdges()
 
-} // end of class AdjacencyList
+}// end of class AdjacencyList

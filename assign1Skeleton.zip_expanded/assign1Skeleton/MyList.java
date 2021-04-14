@@ -1,4 +1,4 @@
-package list;
+
 
 /**
  * Interface for the two lists implementation we will develop in this lab.
@@ -19,6 +19,8 @@ public interface MyList
      * @param newValue Value to add to list.
      */
     public abstract void add(String newValue);
+    
+    public abstract int getLength();
 
 
     /**

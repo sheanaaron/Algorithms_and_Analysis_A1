@@ -1,7 +1,7 @@
-package array;
 
-import array.MyArray;
-import list.MyList;
+//import array.MyArray;
+
+//import list.MyList;
 
 /**
  * Array implementation that implements MyArray interface using a minimal approach.
@@ -157,9 +157,10 @@ public class DynamicArrayMinimal implements MyArray
 
         // copy all values after index
         // we need to go in reverse direction to avoid overriding values.
-    	for (int j = array.length; j > index; j--) {
+    	for (int j = array.length-1; j > index; j--) {
     		newArray[j] = array[j-1];
     	}
+
 
         // update reference of array to point to newArray
     	array = newArray;   
@@ -194,7 +195,7 @@ public class DynamicArrayMinimal implements MyArray
     */
     public void print() {
         if (array != null) {
-            for (int i = 0; i < array.length; i++) {
+            for (int i = 0; i < array.length-1; i++) {
                 System.out.print(array[i] + "\n");
             }
         }

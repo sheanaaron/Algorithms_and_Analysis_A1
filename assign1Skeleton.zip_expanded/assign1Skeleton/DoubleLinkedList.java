@@ -1,4 +1,4 @@
-package list;
+
 
 /**
  * Double linked list that implements interface MyList.
@@ -23,7 +23,6 @@ public class DoubleLinkedList implements MyList
 		mHead = null;
 		mTail = null;
 		mLength = 0;
-		mHead.setState(SIRState.S);
 	} // end of DoubleLinkedList()
 
 
@@ -48,6 +47,12 @@ public class DoubleLinkedList implements MyList
 		++mLength;
 
 	} // end of add()
+	
+	//returns the length of a string
+	public int getLength()
+	{
+		return mLength-1;
+	}
 
 
 	/**
@@ -130,10 +135,10 @@ public String get(Integer index) throws IndexOutOfBoundsException {
 			currentNode = currentNode.getPrev();
 		}
 	}
-//	System.out.println("This is the cuurent node: "+  currentNode.getVertLabel() + "");
 	return currentNode.getVertLabel();
 } // end of get()
 
+//returns the state of the node.
 public String getState() {
 
 	return mHead.getState().toString();
@@ -288,7 +293,7 @@ public String toString() {
 /**
  * Node type, inner private class.
  */
-public class Node
+private class Node
 {
 	/** Stored VertLabel of node. */
 	private String vertLabel;
@@ -303,7 +308,7 @@ public class Node
 		vertLabel = newVertLabel;
 		mNext = null;
 		mPrev = null;
-		SIRState mState;
+		mState = SIRState.S;
 		
 		
 	}
