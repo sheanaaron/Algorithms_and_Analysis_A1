@@ -233,25 +233,18 @@ public class AdjacencyList extends AbstractGraph
 		StringBuffer str = new StringBuffer();
 		if (map.size()>0)
 		{
-//			for (int i=0; i< map.size(); i++)
-//
-//			{
-//				for (int j=1; j<graph.get(i).getLength();j++)
-//				{
-//					str.append(graph.get(i).get(0) + graph.get(i).get(j) + "\n");
-//				}
-//			}
-//			os.write(str.toString());
-//			os.flush();
-			for (int i=0; i<map.size(); i++)
-			{
-				System.out.println("YS");
+			for (int i=0; i< map.size(); i++)
 
-				if (graph.get(i).getLength()>1)
+			{
+				MyList currList =graph.get(i); 
+				if (currList.getLength()>0)
 				{
-					graph.get(i).print();
+					for (int j=0; j<currList.getLength(); j++)
+						str.append(currList.get(currList.getLength()) +" "+ currList.get(j) + "\n");
 				}
 			}
+			os.write(str.toString());        
+			os.flush();
 		}else
 			System.err.println("Empty Graph");
 	} // end of printEdges()
