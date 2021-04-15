@@ -54,11 +54,7 @@ public class DynamicArrayMinimal implements MyArray
 
         return array[index];
     } // end of get()
-    
-    public void doNothing()
-    {
-    	System.out.println("this works");
-    }
+ 
 
 
     /**
@@ -149,17 +145,26 @@ public class DynamicArrayMinimal implements MyArray
             throw new IndexOutOfBoundsException("Supplied index is invalid.");
         }
         MyList newArray[] = new MyList[array.length-1];
+        
+        if (array.length<3)
+        {
+        	 // copy all values before index
+        	for (int i = 0; i < index; i++)
+        		newArray[i] = array[i];
+        
+        }
+        else {
 
         // copy all values before index
     	for (int i = 0; i < index; i++) {
     		newArray[i] = array[i];
     	}
-
         // copy all values after index
         // we need to go in reverse direction to avoid overriding values.
-    	for (int j = array.length-1; j > index; j--) {
-    		newArray[j] = array[j-1];
+    	for (int j = array.length-2; j > index; j--) {
+    		newArray[j] = array[j];
     	}
+        }
 
 
         // update reference of array to point to newArray

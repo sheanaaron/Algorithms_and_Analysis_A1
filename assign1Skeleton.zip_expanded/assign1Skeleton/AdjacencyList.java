@@ -3,6 +3,8 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Map.Entry;
 // import java.util.*;
 //import array.*;
 //import list.*;
@@ -169,39 +171,47 @@ public class AdjacencyList extends AbstractGraph
 
 	public void deleteVertex(String vertLabel) {
 		boolean exists = false;
+		Integer foundIndex = 0;
 		vertLabel = vertLabel.toUpperCase();
 
 		if (map.size()!=0)
 		{
-			//check if item exists
-			Iterator it = map.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry pair = (Map.Entry)it.next();
-				if (pair.getKey().equals(vertLabel))
+			//check if item exists			
+			for (Entry<String, Integer> entry : map.entrySet())
+			{
+				if (Objects.equals(vertLabel, entry.getKey()))
+				{
 					exists = true;
-				break;
+					foundIndex = entry.getValue();
+				}
 			}
+
 			if (exists)
 			{
 				//remove each edge that is connected to this vertex
 				for (int i=0; i<map.size(); i++)
 				{	
-					if (!graph.get(i).get(0).equals(vertLabel))
-						graph.get(i).remove(vertLabel);
+					MyList currList = graph.get(i);	
+					if (i!=foundIndex)
+						for (int j=0; j<currList.getLength(); j++)
+							currList.remove(vertLabel);
 				}
+
 				//remove vertex from the graph
-				graph.remove(map.get(vertLabel));
+				graph.remove(foundIndex);
 
 			}else
 				System.err.println("item doesnt exist");			
 		}
 		else
-			System.err.println("Empty list");
+			System.err.println("Empty graph");
 	} // end of deleteVertex()
 
 
 	public String[] kHopNeighbours(int k, String vertLabel) {
-		// Implement me!
+		// reasoning at : https://cstheory.stackexchange.com/questions/12598/count-k-hop-neighborhood-for-every-vertex
+		// DFS and BFS: https://gist.github.com/rishabhverma17/bdf86c1d2934fcfe6ca932fb1a8fe3e4
+
 
 		// please update!
 		return null;
@@ -217,7 +227,7 @@ public class AdjacencyList extends AbstractGraph
 			for (int i=0; i<map.size(); i++)
 			{
 				MyList currList = graph.get(i);
-				str.append("(" + currList.get(currList.getLength()) + ","+ graph.get(i).getState().toString()+") ") ;
+				str.append("(" + currList.get(currList.getVertexIndex()) + ","+ graph.get(i).getState().toString()+") ") ;
 			}			  
 
 			os.write(str.toString());        
@@ -237,14 +247,15 @@ public class AdjacencyList extends AbstractGraph
 
 			{
 				MyList currList =graph.get(i); 
-				if (currList.getLength()>0)
+				if (currList.getVertexIndex()>0)
 				{
-					for (int j=0; j<currList.getLength(); j++)
-						str.append(currList.get(currList.getLength()) +" "+ currList.get(j) + "\n");
+					//					for (int j=0; j<currList.getLength(); j++)
+					//						str.append(currList.get(currList.getLength()) +" "+ currList.get(j) + "\n");
+					currList.print();
 				}
 			}
-			os.write(str.toString());        
-			os.flush();
+			//			os.write(str.toString());        
+			//			os.flush();
 		}else
 			System.err.println("Empty Graph");
 	} // end of printEdges()

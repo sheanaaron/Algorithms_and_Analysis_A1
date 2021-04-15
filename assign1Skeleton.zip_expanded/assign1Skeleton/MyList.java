@@ -20,7 +20,12 @@ public interface MyList
      */
     public abstract void add(String newValue);
     
+    //returns index of vertex;
+    public abstract int getVertexIndex();
+    
+    //returns index of Length of list;
     public abstract int getLength();
+    
 
 
     /**

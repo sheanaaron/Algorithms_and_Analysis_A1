@@ -18,7 +18,6 @@ public interface MyArray
 	// Default value to return for search when value isn't found in array.
 	public static final int NOT_IN_ARRAY = -1;
 
-	public abstract void doNothing();
 	/**
 	 * Sets/replaces the value at index.  Indices start at 0.
 	 *

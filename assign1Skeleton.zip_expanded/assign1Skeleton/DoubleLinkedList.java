@@ -49,9 +49,14 @@ public class DoubleLinkedList implements MyList
 	} // end of add()
 	
 	//returns the length of a string
-	public int getLength()
+	public int getVertexIndex()
 	{
 		return mLength-1;
+	}
+	
+	public int getLength()
+	{
+		return mLength;
 	}
 
 
