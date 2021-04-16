@@ -35,7 +35,7 @@ public interface MyArray
 	 *
 	 * @throws IndexOutOfBoundsException In index are out of bounds.
 	 */
-	public abstract MyList get(int index) throws IndexOutOfBoundsException;
+	public abstract MyList get(Integer index) throws IndexOutOfBoundsException;
 
 
 	/**

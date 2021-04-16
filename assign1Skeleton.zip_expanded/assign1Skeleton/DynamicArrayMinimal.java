@@ -47,7 +47,7 @@ public class DynamicArrayMinimal implements MyArray
      *
      * @throws IndexOutOfBoundsException In index are out of bounds.
      */
-    public MyList get(int index) throws IndexOutOfBoundsException {
+    public MyList get(Integer index) throws IndexOutOfBoundsException {
     	if (index >= array.length || index < 0) {
             throw new IndexOutOfBoundsException("Supplied index is invalid.");
         }

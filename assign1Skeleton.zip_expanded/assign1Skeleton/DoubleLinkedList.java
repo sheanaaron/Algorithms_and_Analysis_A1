@@ -8,12 +8,12 @@
 public class DoubleLinkedList implements MyList
 {
 	/** Reference to head of list. */
-	private Node mHead;
+	protected Node mHead;
 	/** Reference to tail of list. */
-	private Node mTail;
+	protected Node mTail;
 
 	/** Length of list. */
-	private int mLength;
+	protected int mLength;
 
 
 	/**
@@ -298,7 +298,7 @@ public String toString() {
 /**
  * Node type, inner private class.
  */
-private class Node
+class Node
 {
 	/** Stored VertLabel of node. */
 	private String vertLabel;
