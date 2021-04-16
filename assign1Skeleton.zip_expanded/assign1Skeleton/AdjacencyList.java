@@ -155,6 +155,7 @@ public class AdjacencyList extends AbstractGraph
 					//if edge exists, then delete edges
 					srcList.remove(tarLabel);
 					tarList.remove(srcLabel);
+
 				}
 				else
 					System.err.println("Edge doesn't exist");
@@ -174,7 +175,7 @@ public class AdjacencyList extends AbstractGraph
 		Integer foundIndex = 0;
 		vertLabel = vertLabel.toUpperCase();
 
-		if (map.size()!=0)
+		if (vertices!=0)
 		{
 			//check if item exists			
 			for (Entry<String, Integer> entry : map.entrySet())
@@ -189,16 +190,23 @@ public class AdjacencyList extends AbstractGraph
 			if (exists)
 			{
 				//remove each edge that is connected to this vertex
-				for (int i=0; i<map.size(); i++)
+				for (int i=0; i<vertices-1; i++)
 				{	
 					MyList currList = graph.get(i);	
-					if (i!=foundIndex)
-						for (int j=0; j<currList.getLength(); j++)
+					if (currList.getLength()>0)
+						for (int j=1; j<currList.getLength(); j++)
 							currList.remove(vertLabel);
 				}
 
 				//remove vertex from the graph
 				graph.remove(foundIndex);
+				//update maps referances
+				for ( int i=foundIndex; i< map.size(); i++)
+					map.put(getKey(map, i), i-1);
+				//remove vertex from map
+				map.remove(vertLabel);
+				//update vertices
+				--vertices;
 
 			}else
 				System.err.println("item doesnt exist");			
@@ -221,14 +229,14 @@ public class AdjacencyList extends AbstractGraph
 	public void printVertices(PrintWriter os) {
 
 
-		if (map.size()>0)
+		if (vertices>0)
 		{
 			StringBuffer str = new StringBuffer();
-			for (int i=0; i<map.size(); i++)
+			for (int i=0; i<vertices; i++)
 			{
-				MyList currList = graph.get(i);
-				str.append("(" + currList.get(currList.getVertexIndex()) + ","+ graph.get(i).getState().toString()+") ") ;
-			}			  
+				MyList currList = graph.get(i);			
+				str.append("(" + currList.get(currList.getVertexIndex()) + ","+ currList.getState().toString()+") ") ;
+			}		  
 
 			os.write(str.toString());        
 			os.flush();
@@ -246,18 +254,28 @@ public class AdjacencyList extends AbstractGraph
 			for (int i=0; i< map.size(); i++)
 
 			{
-				MyList currList =graph.get(i); 
+				MyList currList = graph.get(i); 
 				if (currList.getVertexIndex()>0)
 				{
-					//					for (int j=0; j<currList.getLength(); j++)
-					//						str.append(currList.get(currList.getLength()) +" "+ currList.get(j) + "\n");
-					currList.print();
+					for (int j=0; j<currList.getLength()-1; j++)
+						str.append(currList.get(currList.getLength()-1) +" "+ currList.get(j) + "\n");
 				}
 			}
-			//			os.write(str.toString());        
-			//			os.flush();
+			os.write(str.toString());        
+			os.flush();
 		}else
 			System.err.println("Empty Graph");
 	} // end of printEdges()
+
+	public static <K, V> K getKey(Map<K, V> map, V value)
+	{
+		for (K key: map.keySet())
+		{
+			if (value.equals(map.get(key))) {
+				return key;
+			}
+		}
+		return null;
+	}
 
 }// end of class AdjacencyList
