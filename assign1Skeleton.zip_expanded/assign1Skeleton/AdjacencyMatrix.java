@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 public class AdjacencyMatrix extends AbstractGraph {
 	private boolean adjMatrix[][];
 	private int numVertices;
-	private String vertices[];
+	private Vertex vertices[];
 
 	/**
 	 * Contructs empty graph.
@@ -19,8 +19,34 @@ public class AdjacencyMatrix extends AbstractGraph {
 	public AdjacencyMatrix() {
 		numVertices = 0;
 		adjMatrix = new boolean[numVertices][numVertices];
-		vertices = new String[numVertices];
+		vertices = new Vertex[numVertices];
 
+	}
+
+	// Vertex class to store current vertlabel and SIR state
+	public class Vertex {
+		private String vertLabel;
+		private SIRState sirState;
+
+		public Vertex(String vertLabel) {
+			this.vertLabel = vertLabel;
+		}
+
+		public String getVertLabel() {
+			return vertLabel;
+		}
+
+		public SIRState getState() {
+			return sirState;
+		}
+
+		public void setState() {
+			if (this.sirState == SIRState.S) {
+				this.sirState = SIRState.I;
+			} else if (this.sirState == SIRState.I) {
+				this.sirState = SIRState.R;
+			}
+		}
 	}
 
 	public void addVertex(String vertLabel) {
@@ -28,7 +54,7 @@ public class AdjacencyMatrix extends AbstractGraph {
 		// checks if the vertex already exists
 		boolean exists = false;
 		for (int i = 0; i < vertices.length; ++i) {
-			if (vertices[i].contains(vertLabel)) {
+			if (vertices[i].getVertLabel().contains(vertLabel)) {
 				exists = true;
 			}
 		}
@@ -50,11 +76,11 @@ public class AdjacencyMatrix extends AbstractGraph {
 			}
 
 			// create temp array for storing old vertex name data
-			String[] oldNames = new String[numVertices - 1];
+			Vertex[] oldNames = new Vertex[numVertices - 1];
 			oldNames = vertices;
 
 			// increase size of vertix array by 1
-			vertices = new String[numVertices];
+			vertices = new Vertex[numVertices];
 
 			// copies old data into new array
 			for (int i = 0; i < oldNames.length; ++i) {
@@ -62,7 +88,7 @@ public class AdjacencyMatrix extends AbstractGraph {
 			}
 
 			// inserts new vertex name into array name table
-			vertices[numVertices - 1] = vertLabel;
+			vertices[numVertices - 1] = new Vertex(vertLabel);
 		}
 
 	}
@@ -74,14 +100,14 @@ public class AdjacencyMatrix extends AbstractGraph {
 
 		// Scan for srcLabel in the array
 		for (int i = 0; i < vertices.length; ++i) {
-			if (vertices[i].contains(srcLabel)) {
+			if (vertices[i].getVertLabel().contains(srcLabel)) {
 				srcI = i;
 			}
 		}
 
 		// Scan for tarLabel in the array
 		for (int i = 0; i < vertices.length; ++i) {
-			if (vertices[i].contains(tarLabel)) {
+			if (vertices[i].getVertLabel().contains(tarLabel)) {
 				tarI = i;
 			}
 		}
@@ -91,11 +117,14 @@ public class AdjacencyMatrix extends AbstractGraph {
 		adjMatrix[tarI][srcI] = true;
 	}
 
+	
+	// Transition SIR-State from S>I>R.
 	public void toggleVertexState(String vertLabel) {
-//		SIRState susceptable = SIRState.S;
-//		SIRState infected = SIRState.I;
-//		SIRState rercovered = SIRState.R;
-		// TODO
+		for (int i = 0; i < vertices.length; ++i) {
+			if (vertices[i].getVertLabel().contains(vertLabel)) {
+				vertices[i].setState();
+			}
+		}
 	}
 
 	public void deleteEdge(String srcLabel, String tarLabel) {
@@ -105,14 +134,14 @@ public class AdjacencyMatrix extends AbstractGraph {
 
 		// Scan for srcLabel in the array
 		for (int i = 0; i < vertices.length; ++i) {
-			if (vertices[i].contains(srcLabel)) {
+			if (vertices[i].getVertLabel().contains(srcLabel)) {
 				srcI = i;
 			}
 		}
 
 		// Scan for tarLabel in the array
 		for (int i = 0; i < vertices.length; ++i) {
-			if (vertices[i].contains(tarLabel)) {
+			if (vertices[i].getVertLabel().contains(tarLabel)) {
 				tarI = i;
 			}
 		}
@@ -126,7 +155,7 @@ public class AdjacencyMatrix extends AbstractGraph {
 		// find the array index of value we want to remove
 		int index = -1;
 		for (int i = 0; i < vertices.length; ++i) {
-			if (vertices[i].contains(vertLabel)) {
+			if (vertices[i].getVertLabel().contains(vertLabel)) {
 				index = i;
 			}
 		}
@@ -134,7 +163,7 @@ public class AdjacencyMatrix extends AbstractGraph {
 		// if value doesnt exist in array, don't continue
 		if (index != -1) {
 			// Create another array of size one less than previous array
-			String[] anotherArray = new String[vertices.length - 1];
+			Vertex[] anotherArray = new Vertex[vertices.length - 1];
 
 			// Copy the elements except the index
 			// from original array to the other array
@@ -154,7 +183,7 @@ public class AdjacencyMatrix extends AbstractGraph {
 			// Reduces size of vertices array by 1, then copy data from temp array into
 			// vertices array
 			numVertices -= 1;
-			vertices = new String[numVertices];
+			vertices = new Vertex[numVertices];
 			vertices = anotherArray;
 		}
 
@@ -166,22 +195,27 @@ public class AdjacencyMatrix extends AbstractGraph {
 		// please update!
 		return null;
 	} // end of kHopNeighbours()
-
+	
+	
+	// Prints the vertices from our vertices array
 	public void printVertices(PrintWriter os) {
 		for (int i = 0; i < numVertices; ++i) {
-			System.out.println("Vertex: " + vertices[i]);
+			System.out.println("Vertex: " + vertices[i].getVertLabel());
 		}
 	}
 
+	// prints the edges from our 2d edges array
 	public void printEdges(PrintWriter os) {
 		try {
 			for (int i = 0; i < adjMatrix.length; ++i) {
 				for (int j = 0; j < adjMatrix.length; ++j) {
 					if (i != j) {
 						if (adjMatrix[i][j] == true) {
-							System.out.println("Edge: " + vertices[i] + " - " + vertices[j]);
+							System.out.println(
+									"Edge: " + vertices[i].getVertLabel() + " - " + vertices[j].getVertLabel());
 						} else if (adjMatrix[j][i] == true) {
-							System.out.println("Edge: " + vertices[j] + " - " + vertices[i]);
+							System.out.println(
+									"Edge: " + vertices[j].getVertLabel() + " - " + vertices[i].getVertLabel());
 						}
 					}
 				}
