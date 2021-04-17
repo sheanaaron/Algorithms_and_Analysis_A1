@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 /**
  * Adjacency matrix implementation for the GraphInterface interface.
@@ -30,6 +31,7 @@ public class AdjacencyMatrix extends AbstractGraph {
 
 		public Vertex(String vertLabel) {
 			this.vertLabel = vertLabel;
+			this.sirState = SIRState.S;
 		}
 
 		public String getVertLabel() {
@@ -117,7 +119,6 @@ public class AdjacencyMatrix extends AbstractGraph {
 		adjMatrix[tarI][srcI] = true;
 	}
 
-	
 	// Transition SIR-State from S>I>R.
 	public void toggleVertexState(String vertLabel) {
 		for (int i = 0; i < vertices.length; ++i) {
@@ -189,19 +190,39 @@ public class AdjacencyMatrix extends AbstractGraph {
 
 	}
 
+	// returns string array of neighbors of node vertLabel that are k hops away or
+	// less
 	public String[] kHopNeighbours(int k, String vertLabel) {
-		// TODO
+		// TODO - (NOT FULLY WORKING YET)
+		String neighbors[] = { "" };
+		int srcI = 0;
+
+		// Scan for srcLabel in the array
+		for (int i = 0; i < vertices.length; ++i) {
+			if (vertices[i].getVertLabel().contains(vertLabel)) {
+				srcI = i;
+			}
+		}
+
+		// scans 1 hop away from node
+		for (int i = 0; i < vertices.length; ++i) {
+			if (adjMatrix[srcI][i]) {
+				// increases array size by 1, then adds vertLabel to the end of array
+				neighbors = Arrays.copyOf(neighbors, neighbors.length + 1);
+				neighbors[neighbors.length - 1] = vertices[i].getVertLabel();
+			}
+		}
 
 		// please update!
-		return null;
+		return neighbors;
 	} // end of kHopNeighbours()
-	
-	
+
 	// Prints the vertices from our vertices array
 	public void printVertices(PrintWriter os) {
 		for (int i = 0; i < numVertices; ++i) {
-			System.out.println("Vertex: " + vertices[i].getVertLabel());
+			System.out.print("(" + vertices[i].getVertLabel() + "," + vertices[i].getState() + ") ");
 		}
+		System.out.println();
 	}
 
 	// prints the edges from our 2d edges array
@@ -211,11 +232,9 @@ public class AdjacencyMatrix extends AbstractGraph {
 				for (int j = 0; j < adjMatrix.length; ++j) {
 					if (i != j) {
 						if (adjMatrix[i][j] == true) {
-							System.out.println(
-									"Edge: " + vertices[i].getVertLabel() + " - " + vertices[j].getVertLabel());
+							System.out.println(vertices[i].getVertLabel() + " " + vertices[j].getVertLabel());
 						} else if (adjMatrix[j][i] == true) {
-							System.out.println(
-									"Edge: " + vertices[j].getVertLabel() + " - " + vertices[i].getVertLabel());
+							System.out.println("FUCK");
 						}
 					}
 				}
