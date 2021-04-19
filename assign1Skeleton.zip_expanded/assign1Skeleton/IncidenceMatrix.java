@@ -78,6 +78,7 @@ public class IncidenceMatrix extends AbstractGraph
 		{
 			for (int i=0; i<incMatrix.length-1; i++ )
 			{
+				System.out.println("i: " + i);
 				incMatrix[i] = new boolean[1];
 			}
 		}else {
@@ -163,10 +164,10 @@ public class IncidenceMatrix extends AbstractGraph
 					//add the edge to the edges array 
 					edges = new String[1];
 					edges[0] = srcLabel+" "+tarLabel + "\n" + tarLabel + " " + srcLabel; 
+					addColumn();
 					System.out.println(edges[0]);
 					++numEdges;
 					// add a new column to the matrix
-					addColumn();
 
 				}else 
 
@@ -191,9 +192,10 @@ public class IncidenceMatrix extends AbstractGraph
 
 						// update reference of array to point to newArray
 						edges = newArray;
+						addColumn();
+
 						++numEdges;
 						// increase all array sizes by 1
-						addColumn();
 
 						//add the edges to the incidence matrix
 						incMatrix[srcIndex][numEdges-1] = true;
