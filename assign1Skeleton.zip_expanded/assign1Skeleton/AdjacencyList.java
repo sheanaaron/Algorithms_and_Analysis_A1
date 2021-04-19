@@ -1,5 +1,4 @@
 import java.io.PrintWriter;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -117,7 +116,29 @@ public class AdjacencyList extends AbstractGraph
 
 
 	public void toggleVertexState(String vertLabel) {
-		// Implement me!
+		boolean exists = false;
+		Integer foundIndex=0;
+		if (vertices!=0)
+		{
+			//check if vertex exists			
+			for (Entry<String, Integer> entry : map.entrySet())
+			{
+				if (Objects.equals(vertLabel, entry.getKey()))
+				{
+					exists = true;
+					foundIndex = entry.getValue();
+				}
+			}
+			if (exists)
+			{
+				MyList currList = graph.get(foundIndex);
+				currList.toggleState();
+			}else
+				System.err.println("Vertex doesnt exist");
+			
+		}
+		System.err.println("Empty graph");
+		
 	} // end of toggleVertexState()
 
 

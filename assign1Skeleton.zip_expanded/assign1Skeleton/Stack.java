@@ -27,14 +27,18 @@ public class Stack extends DoubleLinkedList{
 
 		if (mTail!=null)
 		{
-			Node currNode = mHead;
-			mHead = currNode.getNext();
+			Node currNode = mTail;
+			mTail = currNode.getPrev();
 			currNode = null;
 			--mLength;
 		}
+		else
+		{
+			mHead = null;
+		}
 		
 
-	} // end of push()
+	} // end of pops()
 	
 	
 

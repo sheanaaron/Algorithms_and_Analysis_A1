@@ -36,7 +36,7 @@ public interface MyList
      *
      * @throws IndexOutOfBoundsException Index is out of bounds.
      */
-    public abstract void insert(int index, String newValue) throws IndexOutOfBoundsException;
+//    public abstract void insert(int index, String newValue) throws IndexOutOfBoundsException;
 
 
     /**
@@ -50,6 +50,9 @@ public interface MyList
     public abstract String get(Integer index) throws IndexOutOfBoundsException;
     
     public String getState();
+    
+    public void toggleState();
+
 
 
     /**
@@ -82,8 +85,6 @@ public interface MyList
      *
      * @throws IndexOutOfBoundsException Index is out of bounds.
      */
-    public abstract String remove(int index, boolean dummy) throws IndexOutOfBoundsException;
-
 
     /**
      * Print the list in head to tail.
@@ -94,6 +95,6 @@ public interface MyList
     /**
      * Print the list from tail to head.
      */
-    public abstract void reversePrint();
+//    public abstract void reversePrint();
 
 } // end of interface MyList
