@@ -83,14 +83,14 @@ public class IncidenceMatrix extends AbstractGraph
 			}
 		}else {		
 			boolean newMatrix[][] = new boolean [incMatrix.length][incMatrix[0].length+1];
-			
+
 			for (int i=0; i<incMatrix[0].length-1; i++)
 			{
 				for (int j=0; j<incMatrix[0].length; j++)
 					newMatrix[i][j] = incMatrix[i][j];
 				newMatrix[i][incMatrix[0].length] = false;
 			}
-			
+
 			incMatrix = newMatrix;
 		}	
 
@@ -104,7 +104,7 @@ public class IncidenceMatrix extends AbstractGraph
 		}else {
 
 			boolean newMatrix[][] = new boolean [incMatrix.length+1][incMatrix[0].length];
-			
+
 			//adding the old rows to the newMatrix
 			for (int i=0; i<incMatrix.length; i++)
 			{
@@ -236,21 +236,92 @@ public class IncidenceMatrix extends AbstractGraph
 
 	public void removeRow()
 	{
-		
+
 	}
-	
-	public void removeColumn()
+
+	public void removeColumn(int index)
 	{
-		
-	}
-	
-	
-	public void deleteEdge(String srcLabel, String tarLabel) {
-		
-		if (incMatrix.length>2)
+		boolean newMatrix[][] = new boolean [incMatrix.length][incMatrix[0].length-1];
+
+		for (int i=0; i<incMatrix[0].length-1; i++)
 		{
-			
+			for (int j=0; j<index; j++)
+				newMatrix[i][j] = incMatrix[i][j];
+
+			for (int k=incMatrix[0].length-1; k>index; k--)
+				newMatrix[i][k-1] = incMatrix[i][k];
 		}
+
+		incMatrix = newMatrix;
+	}
+
+
+	public void deleteEdge(String srcLabel, String tarLabel) {
+
+		srcLabel = srcLabel.toUpperCase();
+		tarLabel = tarLabel.toUpperCase();
+		if (incMatrix.length>1)
+		{
+			boolean src= false, tar=false;
+			int srcIndex=0, tarIndex=0;
+			for (int i=0; i<vertices.length; ++i)
+			{
+				if (vertices[i].getVertLabel().equals(tarLabel))
+				{
+					tar= true;				
+					tarIndex = i;
+				}
+				if (vertices[i].getVertLabel().equals(srcLabel))
+				{
+					src= true;
+					srcIndex = i;
+				}
+
+			}
+
+			if (src && tar)
+			{
+				boolean exists = false;
+				int edgeIndex = 0;
+				//check if edge already exists
+				for (int i=0; i<numEdges; i++)
+					if (edges[i].contains(srcLabel) && edges[i].contains(tarLabel))
+					{
+						exists = true;
+						edgeIndex = i;
+					}
+				removeColumn(edgeIndex);
+				
+		        String newArray[] = new String[edges.length-1];
+
+		        // copy all values before index
+		    	for (int i = 0; i < edgeIndex; i++) {
+		    		newArray[i] = edges[i];
+		    	}
+		        // copy all values after index
+		        // we need to go in reverse direction to avoid overriding values.
+		    	for (int j = edges.length-1; j > edgeIndex; j--) {
+		    		newArray[j-1] = edges[j];
+		    	}
+
+
+		        // update reference of array to point to newArray
+		    	edges = newArray; 
+				
+
+
+			}else	
+			{
+				if(!src)
+					System.err.println("Source vertex doesnt exist");
+				else if (!tar)
+					System.err.println("Target vertex doesnt exist");
+			}
+
+
+
+		}else
+			System.err.println("Insufficient nodes to perform function");
 	} // end of deleteEdge()
 
 
