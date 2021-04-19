@@ -78,26 +78,21 @@ public class IncidenceMatrix extends AbstractGraph
 		{
 			for (int i=0; i<incMatrix.length-1; i++ )
 			{
-				System.out.println("i: " + i);
 				incMatrix[i] = new boolean[1];
+				incMatrix[i][0] = false;
 			}
-		}else {
-			for (int i=0; i<incMatrix.length-1; i++)
+		}else {		
+			boolean newMatrix[][] = new boolean [incMatrix.length][incMatrix[0].length+1];
+			
+			for (int i=0; i<incMatrix[0].length-1; i++)
 			{
-				//creating a new array with one extra column
-				int currEdges = incMatrix[0].length;
-				boolean newColumn[] = new boolean [currEdges+1];
-
-				//updating rows with existing columns
-				for (int j=0; j<currEdges; j++)
-					newColumn[j] = incMatrix[i][j];
-
-				//giving default values to the new column
-				newColumn[currEdges] = false;
-				incMatrix[i] = newColumn;
+				for (int j=0; j<incMatrix[0].length; j++)
+					newMatrix[i][j] = incMatrix[i][j];
+				newMatrix[i][incMatrix[0].length] = false;
 			}
-		}
-		System.out.println("rows: " + incMatrix.length + " columsn: " + incMatrix[0].length);
+			
+			incMatrix = newMatrix;
+		}	
 
 	}
 
@@ -109,21 +104,19 @@ public class IncidenceMatrix extends AbstractGraph
 		}else {
 
 			boolean newMatrix[][] = new boolean [incMatrix.length+1][incMatrix[0].length];
-
+			
 			//adding the old rows to the newMatrix
 			for (int i=0; i<incMatrix.length; i++)
+			{
 				for (int j=0; j<incMatrix[0].length-1; j++)
 					newMatrix[i][j] = incMatrix[i][j];
-
-
+			}
 
 			//fill the new row with default values
-			for (int i=0; i<incMatrix[0].length; i++)
+			for (int i=0; i<incMatrix[0].length-1; i++)
 				newMatrix[incMatrix.length][i] = false;
 
 			incMatrix = newMatrix;
-			System.out.println("rows: " + incMatrix.length + " columns: " + incMatrix[0].length);
-
 
 		}
 	}
@@ -165,7 +158,6 @@ public class IncidenceMatrix extends AbstractGraph
 					edges = new String[1];
 					edges[0] = srcLabel+" "+tarLabel + "\n" + tarLabel + " " + srcLabel; 
 					addColumn();
-					System.out.println(edges[0]);
 					++numEdges;
 					// add a new column to the matrix
 
@@ -175,8 +167,7 @@ public class IncidenceMatrix extends AbstractGraph
 					//check if edge already exists
 					for (int i=0; i<numEdges; i++)
 						if (edges[i].contains(srcLabel) && edges[i].contains(tarLabel))
-							exists = true;	
-
+							exists = true;
 
 					if (!exists) {
 						//if edge doesnt exist, add edge to the edge array
@@ -188,18 +179,20 @@ public class IncidenceMatrix extends AbstractGraph
 						}
 
 						// new entry, add to end of newArray
-						newArray[edges.length] = srcLabel+" "+tarLabel + "\n" + tarLabel + " " + srcLabel;;
+						newArray[edges.length] = srcLabel+" "+tarLabel + "\n" + tarLabel + " " + srcLabel;
 
 						// update reference of array to point to newArray
 						edges = newArray;
+
 						addColumn();
 
 						++numEdges;
 						// increase all array sizes by 1
 
 						//add the edges to the incidence matrix
-						incMatrix[srcIndex][numEdges-1] = true;
-						incMatrix[tarIndex][numEdges-1] = true;
+						incMatrix[srcIndex][incMatrix[0].length-1] = true;
+						incMatrix[tarIndex][incMatrix[0].length-1] = true;
+
 
 					}
 					else
@@ -241,9 +234,23 @@ public class IncidenceMatrix extends AbstractGraph
 			System.err.println("Empty Graph");
 	} // end of toggleVertexState()
 
-
+	public void removeRow()
+	{
+		
+	}
+	
+	public void removeColumn()
+	{
+		
+	}
+	
+	
 	public void deleteEdge(String srcLabel, String tarLabel) {
-		// Implement me!
+		
+		if (incMatrix.length>2)
+		{
+			
+		}
 	} // end of deleteEdge()
 
 
@@ -303,7 +310,8 @@ public class IncidenceMatrix extends AbstractGraph
 
 
 	public void printEdges(PrintWriter os) {
-		// Implement me!
+		for (int i=0; i<edges.length;i++)
+			System.out.println(edges[i]);
 	} // end of printEdges()
 
 } // end of class IncidenceMatrix
