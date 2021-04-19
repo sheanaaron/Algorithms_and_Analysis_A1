@@ -34,6 +34,7 @@ public class IncidenceMatrix extends AbstractGraph
 			// allocate array of size 1
 			vertices = new Vertex [1];
 			vertices[0] = new Vertex(vertLabel);
+			addRow();
 			++numVertices;
 		}
 		else {
@@ -62,6 +63,8 @@ public class IncidenceMatrix extends AbstractGraph
 				// update reference of array to point to newArray
 				vertices = newArray;
 
+				addRow();
+
 				++numVertices;
 
 			}else
@@ -69,41 +72,58 @@ public class IncidenceMatrix extends AbstractGraph
 		}
 	}// end of addVertex()
 
-	public void resizeArray(Object[] array)
+	public void addColumn()
 	{
-		// increase all array sizes by 1
-		Object newArray[] = new Object [array.length + 1];
+		if (numEdges==0)
+		{
+			for (int i=0; i<incMatrix.length-1; i++ )
+			{
+				incMatrix[i] = new boolean[1];
+			}
+		}else {
+			for (int i=0; i<incMatrix.length-1; i++)
+			{
+				//creating a new array with one extra column
+				int currEdges = incMatrix[0].length;
+				boolean newColumn[] = new boolean [currEdges+1];
 
-		// copy all existing values of array to newArray
-		for (int i = 0; i < array.length; i++) {
-			newArray[i] = array[i];
+				//updating rows with existing columns
+				for (int j=0; j<currEdges; j++)
+					newColumn[j] = incMatrix[i][j];
+
+				//giving default values to the new column
+				newColumn[currEdges] = false;
+				incMatrix[i] = newColumn;
+			}
 		}
-		// update reference of array to point to newArray
-		array = newArray;		
+		System.out.println("rows: " + incMatrix.length + " columsn: " + incMatrix[0].length);
+
 	}
 
-//	public void resizeIncMatrix(boolean[] array)
-//	{
-//		// increase all array sizes by 1
-//		boolean newArray[] = new boolean [array.length + 1];
-//
-//		// copy all existing values of array to newArray
-//		for (int i = 0; i < array.length; i++) {
-//			newArray[i] = array[i];
-//		}
-//		// update reference of array to point to newArray
-//		array = newArray;		
-//	}
-	
-	public void addColumn(boolean [][] inc)
+	public void addRow()
 	{
-		for (int i=0; i<inc.length-1; i++)
-		{
-			boolean newRow[] = new boolean [inc[i].length+1];
-			
-			for (int j=0; j<inc[i].length;j++)
-				newRow[j] = inc[i][j];
-			inc[i] = newRow;
+		if (incMatrix == null) {
+			// allocate matrix of size 1
+			incMatrix = new boolean [1][0];
+		}else {
+
+			boolean newMatrix[][] = new boolean [incMatrix.length+1][incMatrix[0].length];
+
+			//adding the old rows to the newMatrix
+			for (int i=0; i<incMatrix.length; i++)
+				for (int j=0; j<incMatrix[0].length-1; j++)
+					newMatrix[i][j] = incMatrix[i][j];
+
+
+
+			//fill the new row with default values
+			for (int i=0; i<incMatrix[0].length; i++)
+				newMatrix[incMatrix.length][i] = false;
+
+			incMatrix = newMatrix;
+			System.out.println("rows: " + incMatrix.length + " columns: " + incMatrix[0].length);
+
+
 		}
 	}
 
@@ -139,20 +159,17 @@ public class IncidenceMatrix extends AbstractGraph
 
 				boolean exists=false;
 				//update the edges 
-				if (numEdges == 0) {
+				if (edges == null) {
 					//add the edge to the edges array 
 					edges = new String[1];
 					edges[0] = srcLabel+" "+tarLabel + "\n" + tarLabel + " " + srcLabel; 
+					System.out.println(edges[0]);
 					++numEdges;
-					incMatrix = new boolean[numVertices][numEdges];
-					for (int i=0; i<numVertices -1; i++)
-					{
-						// increase all array sizes by 1
-//						resizeIncMatrix(incMatrix[i]);
-						//this would set all the edge values in the matrix to 0
-						incMatrix[i][0] = false;
-					}
+					// add a new column to the matrix
+					addColumn();
+
 				}else 
+
 				{
 					//check if edge already exists
 					for (int i=0; i<numEdges; i++)
@@ -162,49 +179,30 @@ public class IncidenceMatrix extends AbstractGraph
 
 					if (!exists) {
 						//if edge doesnt exist, add edge to the edge array
-						resizeArray(edges);
-						edges[edges.length-1] = srcLabel+" "+tarLabel + "\n" + tarLabel + " " + srcLabel; 
+						String newArray[] = new String [edges.length + 1];
 
-						for (int i=0; i<edges.length; i++)
-						{
-							System.out.println(edges[i]);
+						// copy all existing values of array to newArray
+						for (int i = 0; i < edges.length; i++) {
+							newArray[i] = edges[i];
 						}
 
-						System.out.println("verts: " +numVertices + "\nedges:" + numEdges);
+						// new entry, add to end of newArray
+						newArray[edges.length] = srcLabel+" "+tarLabel + "\n" + tarLabel + " " + srcLabel;;
+
+						// update reference of array to point to newArray
+						edges = newArray;
 						++numEdges;
-
-						for (int i=0; i<numVertices-1; ++i)
-						{
-							// increase all array sizes by 1
-//							resizeIncMatrix(incMatrix[i]);
-							System.out.println("rows: " + incMatrix.length + " columsn: " + incMatrix[0].length);
-
-							//this would set all the edge values in the matrix to 0
-							incMatrix[i][numEdges] = false;
-						}
-						System.out.println("verts: " +numVertices + "\nedges:" + numEdges);
-						System.out.println("rows: " + incMatrix.length + " columsn: " + incMatrix[0].length);
+						// increase all array sizes by 1
+						addColumn();
 
 						//add the edges to the incidence matrix
 						incMatrix[srcIndex][numEdges-1] = true;
 						incMatrix[tarIndex][numEdges-1] = true;
 
-
-						for (int i=0; i<vertices.length; i++)
-
-						{
-
-							for (int j=0; j<edges.length-1; j++) {
-								int val = incMatrix[i][j] ? 1 : 0;
-								System.out.print( val + " ");
-							}
-						}
-
 					}
 					else
 						System.err.println("Edge already exists");
 				}
-				//				System.out.println("");
 			}
 			else
 			{
